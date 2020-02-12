@@ -2,25 +2,22 @@
 
 @section('content')
 <div class="container">
+    @if ($posts->count() == 0)
+    <h1 class="text-center">No post to show.</h1>
+    <h3 class="text-center">Go to your <a href="/profile/{{ Auth::user()->id }}">profile</a> to add some posts.</h3>
+    @endif
+
+    @foreach ($posts as $post)
     <div class="row">
-        <div class="col-8">
-            <img src="/storage/{{ $post->image }}" alt="" class="w-100">
+        <div class="col-6 offset-3">
+            <a href="/profile/{{ $post->user->id }}">
+                <img src="/storage/{{ $post->image }}" class="w-100">
+            </a>
         </div>
-        <div class="col-4">
+    </div>
+    <div class="row pt-2 pb-4">
+        <div class="col-6 offset-3">
             <div>
-                <div class="d-flex align-items-center">
-                    <div class="pr-3">
-                        <img src="{{ $post->user->profile->profileImage() }}" class="w-100 rounded-circle" style="max-width: 50px;">
-                    </div>
-                    <div>
-                        <a href="/profile/{{$post->user->id}}" class="font-weight-bold">{{$post->user->username}}</a>
-                        <span class="px-1">&#8226;</span>
-                        <a href="#">Follow</a>
-                    </div>
-                </div>
-
-                <hr>
-
                 <p>
                     <span class="font-weight-bold">
                         <a href="/profile/{{ $post->user->id }}">
@@ -28,9 +25,14 @@
                         </a>
                     </span> {{ $post->caption }}
                 </p>
-
-                
             </div>
+        </div>
+    </div>
+    @endforeach
+
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center">
+            {{ $posts->links() }}
         </div>
     </div>
     
